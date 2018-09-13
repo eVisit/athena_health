@@ -44,6 +44,50 @@ module AthenaHealth
 
         AthenaHealth::InsuranceCollection.new(response)
       end
+
+      # eVisit methods
+      def all_question_configuration(practice_id:)
+        response = @api.call(
+          endpoint: "#{practice_id}/chart/configuration/medicalhistory",
+          method: :get
+        )
+
+        # TODO: use QuestionConfigurationCollection
+        response['questions'].map { |question_config| QuestionConfiguration.new(question_config) }
+      end
+
+      # eVisit methods
+      def all_allergies_reactions(practice_id:)
+        response = @api.call(
+          endpoint: "#{practice_id}/reference/allergies/reactions",
+          method: :get
+        )
+
+        # TODO: use ReactionCollection
+        response.map  {|allergy_reaction| Reaction.new(allergy_reaction) }
+      end
+
+      # eVisit methods
+      def all_allergies_severities(practice_id:)
+        response = @api.call(
+          endpoint: "#{practice_id}/reference/allergies/severities",
+          method: :get
+        )
+
+        # TODO: use SeverityCollection
+        response.map { |allergy_severity| Severity.new(allergy_severity) }
+      end
+
+      # eVisit methods
+      def all_nonccp_methods(practice_id:)
+        response = @api.call(
+          endpoint: "#{practice_id}/configuration/validnonccpcreditcardmethods",
+          method: :get
+        )
+
+        response['paymentmethods']
+      end
+
     end
   end
 end

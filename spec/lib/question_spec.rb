@@ -9,7 +9,11 @@ describe AthenaHealth::Question do
       'templateid': '78',
       'key': 'ADVANCEDIRECTIVE',
       'ordering': '11',
-      'lastupdated': '05/19/2016'
+      'lastupdated': '05/19/2016',
+      'note': 'notes',
+      'diagnosiscode': '23244',
+      'codeset': 'ABCD',
+      'description': 'a description'
     }
   end
 
@@ -25,7 +29,11 @@ describe AthenaHealth::Question do
       templateid: 78,
       key: 'ADVANCEDIRECTIVE',
       ordering: 11,
-      lastupdated: '05/19/2016'
+      lastupdated: '05/19/2016',
+      note: 'notes',
+      diagnosiscode: '23244',
+      codeset: 'ABCD',
+      description: 'a description'
     )
   end
 end

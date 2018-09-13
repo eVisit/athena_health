@@ -5,6 +5,7 @@ describe AthenaHealth::UserAllergy do
     {
       'allergenname': 'weed pollen',
       'onsetdate': '01/01/2010',
+      'deactivatedate': nil,
       'allergenid': '92193',
       'reactions': [{
           'reactionname': 'chest pain',
@@ -22,6 +23,7 @@ describe AthenaHealth::UserAllergy do
     expect(subject).to have_attributes(
       allergenname: 'weed pollen',
       onsetdate: '01/01/2010',
+      deactivatedate: nil,
       allergenid: 92193,
       note: 'about this allergy'
     )

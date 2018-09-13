@@ -46,6 +46,14 @@ module AthenaHealth
         )
       end
 
+      def appointment_cancel_reasons(practice_id:, params: {})
+        @api.call(
+          endpoint: "#{practice_id}/appointmentcancelreasons",
+          method: :get,
+          params: params
+        )
+      end
+
       def book_appointment(practice_id:, appointment_id:, patient_id:, params: {})
         response = @api.call(
           endpoint: "#{practice_id}/appointments/#{appointment_id}",

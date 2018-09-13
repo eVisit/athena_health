@@ -21,6 +21,16 @@ module AthenaHealth
         Patient.new(response.first)
       end
 
+      # eVisit custom bestmatch
+      def bestmatch(practice_id:, dob:, firstname:, lastname:, params: {})
+        parsed_dob = dob.is_a?(String) ? dob : dob.strftime("%m/%d/%Y")
+        @api.call(
+          endpoint: "#{practice_id}/patients/enhancedbestmatch",
+          method: :get,
+          params: params.merge(dob: parsed_dob, firstname: firstname, lastname: lastname)
+        )
+      end
+
       def find_bestmatch_patients(practice_id:, date_of_birth:, first_name:, last_name:, params: {})
         response = @api.call(
           endpoint: "#{practice_id}/patients/enhancedbestmatch",
@@ -301,6 +311,24 @@ module AthenaHealth
           endpoint: "#{practice_id}/chart/#{patient_id}/allergies",
           method: :put,
           params: params.merge!(departmentid: department_id, allergies: allergies.to_json)
+        )
+      end
+
+      # eVisit method
+      def create_patient_clinicaldocument(practice_id:, department_id:, patient_id:, params: {})
+        @api.call(
+          endpoint: "#{practice_id}/patients/#{patient_id}/documents/clinicaldocument",
+          method: :post,
+          body: params.merge!(departmentid: department_id.to_s)
+        )
+      end
+
+      # eVisit method
+      def get_patient_privacy_information(practice_id:, department_id:, patient_id:)
+        @api.call(
+          endpoint: "#{practice_id}/patients/#{patient_id}/privacyinformationverified",
+          method: :get,
+          params: { departmentid: department_id }
         )
       end
 
