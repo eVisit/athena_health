@@ -225,24 +225,12 @@ module AthenaHealth
         InsuranceCollection.new(response)
       end
 
-      def create_appointment_subscription(practice_id:, params: {})
+      def create_appointment_waitlist(practice_id:, params: {})
         @api.call(
-          endpoint: "#{practice_id}/appointments/changed/subscription",
+          endpoint: "#{practice_id}/appointments/waitlist",
           method: :post,
-          params: params
+          body: params
         )
-      end
-
-      def changed_appointments(practice_id:, department_id:, params: {})
-        response = @api.call(
-          endpoint: "#{practice_id}/appointments/changed",
-          method: :get,
-          params: params.merge!(
-            departmentid: department_id
-          )
-        )
-
-        AppointmentCollection.new(response)
       end
     end
   end

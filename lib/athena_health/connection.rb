@@ -5,19 +5,20 @@ module AthenaHealth
     BASE_URL    = 'https://api.athenahealth.com'.freeze
     AUTH_PATH   = { 'v1' => 'oauth', 'preview1' => 'oauthpreview', 'openpreview1' => 'oauthopenpreview' }
 
-    def initialize(version:, key:, secret:, token: nil, base_url: BASE_URL)
-      @version = version
-      @key = key
-      @secret = secret
-      @token = token
-      @base_url = base_url
+    def initialize(version:, key:, secret:, token: nil, base_url: BASE_URL, auth_path: AUTH_PATH)
+      @version   = version
+      @key       = key
+      @secret    = secret
+      @token     = token
+      @base_url  = base_url || BASE_URL
+      @auth_path = auth_path || AUTH_PATH
     end
 
     def authenticate
       response = Typhoeus.post(
-        "#{@base_url}/#{AUTH_PATH[@version]}/token",
+        "#{@base_url}/#{@auth_path[@version]}/token",
         userpwd: "#{@key}:#{@secret}",
-        body: { grant_type: 'client_credentials' }
+        body: { grant_type: 'client_credentials', scope: 'athena/service/Athenanet.MDP.*' }
       ).response_body
 
       @token = JSON.parse(response)['access_token']

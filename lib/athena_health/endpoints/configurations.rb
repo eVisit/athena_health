@@ -88,6 +88,15 @@ module AthenaHealth
         response['paymentmethods']
       end
 
+      def all_order_types(practice_id:, search_value:)
+        response = @api.call(
+          endpoint: "#{practice_id}/reference/order/lab",
+          method: :get,
+          params: { searchvalue: search_value }
+        )
+
+        response.map { |ordertype| AthenaHealth::OrderType.new(ordertype) }
+      end
     end
   end
 end
