@@ -56,8 +56,24 @@ describe AthenaHealth::Connection do
       )
   end
 
+  context 'when auth_path is defined' do
+    let(:connection_attributes) do
+      {
+        version: 'v1',
+        key: 'test_key',
+        secret: 'test_secret',
+        auth_path: { 'v1' => 'oauth2/v1' }
+      }
+    end
+
+    it 'auth_path overrides constant AUTH_PATH' do
+      expect(connection.instance_variable_get(:@auth_path))
+        .to eq({ 'v1' => 'oauth2/v1' })
+    end
+  end
+
   describe '#authenticate' do
-    context 'when version is preview1' do
+    context 'when version is v1' do
       let(:version) { 'v1' }
 
       it 'returns token' do
@@ -83,6 +99,26 @@ describe AthenaHealth::Connection do
       it 'returns token' do
         VCR.use_cassette('openpreview1_authentication') do
           expect(connection.authenticate).to eq 'test_access_token'
+        end
+      end
+    end
+  end
+
+  describe '#authenticate with custom url and version' do
+    context 'when version is v1' do
+      let(:connection_attributes) do
+        {
+          version: 'v1',
+          key: 'test_key',
+          secret: 'test_secret',
+          base_url: 'https://api.preview.platform.athenahealth.com',
+          auth_path: { 'v1' => 'oauth2/v1' }
+        }
+      end
+
+      it 'returns token' do
+        VCR.use_cassette('v1_authentication_custom') do
+          expect(connection.authenticate).to eq 'test_access_token_custom'
         end
       end
     end
